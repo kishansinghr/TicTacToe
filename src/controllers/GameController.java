@@ -4,7 +4,7 @@ import exceptions.GameNotFoundException;
 import exceptions.InvalidInputException;
 import models.Game;
 import models.Player;
-import models.Status;
+import models.GameStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class GameController {
     private int gameCount = 0;
-    private Map<Integer, Game> games = new HashMap<>();
+    private final Map<Integer, Game> games = new HashMap<>();
 
     private Game getGameById(int id) throws GameNotFoundException {
         if (games.get(id) == null) {
@@ -34,8 +34,16 @@ public class GameController {
         this.getGameById(gameId).makeMove();
     }
 
-    public Status getGameStatus(int gameId) throws GameNotFoundException {
+    public void undoLastMove(int gameId) throws GameNotFoundException {
+        this.getGameById(gameId).undoLastMove();
+    }
+
+    public GameStatus getGameStatus(int gameId) throws GameNotFoundException {
         return this.getGameById(gameId).getStatus();
+    }
+
+    public void printBoard(int gameId) throws GameNotFoundException {
+        this.getGameById(gameId).printBoard();
     }
 
     public void printResult(int gameId) throws GameNotFoundException {

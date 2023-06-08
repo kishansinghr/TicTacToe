@@ -1,28 +1,35 @@
 package strategies;
 
 import models.Board;
-import models.Cell;
+import models.Move;
 import models.Symbol;
+
+import java.util.Objects;
 
 public class DiagonalWinningStrategy implements WinningStrategy {
     @Override
-    public boolean checkWinner(Board board, Cell cell) {
-        Symbol symbol = board.getMatrix().get(cell.getRow()).get(cell.getColumn());
-        if (cell.getRow() == cell.getColumn()) { //upper left diagonal
+    public boolean checkWinner(Board board, Move move) {
+        Symbol symbol = move.getPlayer().getSymbol();
+
+        boolean won;
+        if (move.getRow() == move.getColumn()) { //upper left diagonal
+            won = true;
             for (int i = 0; i < board.getSize(); i++) {
-                if (symbol != board.getMatrix().get(i).get(i)) {
-                    return false;
+                if (!Objects.equals(symbol, board.getMatrix().get(i).get(i).getSymbol())) {
+                    won = false;
                 }
             }
-        } else if (cell.getRow() + cell.getColumn() == board.getSize() - 1) {
-            for (int i = 0; i < board.getSize(); i++) {
-                if (symbol != board.getMatrix().get(i).get(board.getSize() - 1 - i)) {
-                    return false;
-                }
-            }
-        } else {
-            return false;
+            if(won) return true;
         }
-        return true;
+        if (move.getRow() + move.getColumn() == board.getSize() - 1) { // Upper right diagonal
+            won = true;
+            for (int i = 0; i < board.getSize(); i++) {
+                if (!Objects.equals(symbol, board.getMatrix().get(i).get(board.getSize() - 1 - i).getSymbol())) {
+                    won = false;
+                }
+            }
+            return won;
+        }
+        return false;
     }
 }

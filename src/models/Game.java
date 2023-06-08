@@ -1,23 +1,24 @@
 package models;
 
+import enums.PlayerType;
 import exceptions.InvalidInputException;
+import exceptions.MoveNotAllowedException;
 import strategies.ColumnWinningStrategy;
 import strategies.DiagonalWinningStrategy;
 import strategies.RowWinningStrategy;
 import strategies.WinningStrategy;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class Game {
-    private Status status;
+    private GameStatus gameStatus;
     private List<Player> playerList;
     private Board board;
-    private List<Move> moveList;
+    private final Stack<Move> moveList;
     private int playerIndex;
     private Player winner;
-    private List<WinningStrategy> winningStrategies;
+    private final List<WinningStrategy> winningStrategies;
 
     public static Builder getBuilder() {
         return new Builder();
@@ -26,8 +27,8 @@ public class Game {
     private Game(int size, List<Player> playerList) {
         this.playerList = playerList;
         this.board = new Board(size);
-        this.status = Status.IN_PROGRESS;
-        moveList = new ArrayList<>();
+        this.gameStatus = GameStatus.IN_PROGRESS;
+        moveList = new Stack<>();
         playerIndex = 0;
         this.winningStrategies = List.of(
                 new RowWinningStrategy(),
@@ -36,12 +37,12 @@ public class Game {
         );
     }
 
-    public Status getStatus() {
-        return status;
+    public GameStatus getStatus() {
+        return gameStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     public List<Player> getPlayerList() {
@@ -60,14 +61,6 @@ public class Game {
         this.board = board;
     }
 
-    public List<Move> getMoveList() {
-        return moveList;
-    }
-
-    public void setMoveList(List<Move> moveList) {
-        this.moveList = moveList;
-    }
-
     public int getPlayerIndex() {
         return playerIndex;
     }
@@ -81,9 +74,9 @@ public class Game {
     }
 
     public void printResult() {
-        if (this.status == Status.DRAW) {
+        if (this.gameStatus == GameStatus.DRAW) {
             System.out.println("Match draw");
-        } else if (this.status == Status.WON) {
+        } else if (this.gameStatus == GameStatus.WON) {
             System.out.println("Hurray!!! "+winner.getName()+" is won");
             this.printBoard();
         } else {
@@ -93,29 +86,44 @@ public class Game {
 
     public void makeMove() {
         Player currentPlayer = this.getPlayerList().get(this.playerIndex);
-        this.printBoard();
         System.out.println("Turn of Player "+currentPlayer.getName());
-        Cell cell = currentPlayer.makeMove();
+        Move move = currentPlayer.makeMove();
+
+        try {
+            this.board.makeMove(move);
+        } catch (MoveNotAllowedException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         //add move in list
-        this.moveList.add(new Move(cell, currentPlayer));
+        this.moveList.push(move);
 
-        this.board.makeMove(cell, currentPlayer.getSymbol());
-
-        if (this.checkWinner(cell)) {
+        if (this.checkWinner(move)) {
             this.winner = currentPlayer;
-            this.status = Status.WON;
+            this.gameStatus = GameStatus.WON;
         } else if (this.moveList.size() == this.board.getSize() * this.board.getSize()) {
-            this.status = Status.DRAW;
+            this.gameStatus = GameStatus.DRAW;
         }
 
         this.playerIndex += 1;
         this.playerIndex %= this.playerList.size();
     }
 
-    private boolean checkWinner(Cell cell) {
+    public void undoLastMove() {
+        Move lastMove = this.moveList.pop();
+        try {
+            this.board.undoMove(lastMove);
+        } catch (MoveNotAllowedException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.playerIndex += (this.playerList.size()-1);
+        this.playerIndex %= this.playerList.size();
+    }
+    private boolean checkWinner(Move move) {
         for (WinningStrategy winningStrategy : this.winningStrategies) {
-            if (winningStrategy.checkWinner(this.board, cell)) {
+            if (winningStrategy.checkWinner(this.board, move)) {
                 return true;
             }
         }

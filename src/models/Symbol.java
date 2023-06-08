@@ -13,10 +13,6 @@ public class Symbol {
         return character;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,5 +24,10 @@ public class Symbol {
     @Override
     public int hashCode() {
         return Objects.hash(character);
+    }
+
+    @Override
+    public String toString() {
+        return this.character.toString();
     }
 }

@@ -1,20 +1,23 @@
 package models;
 
+import enums.CellStatus;
+import exceptions.MoveNotAllowedException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
     private int size;
-    private List<List<Symbol>> matrix;
+    private List<List<Cell>> matrix;
 
     public Board(int size) {
         this.size = size;
         matrix = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            List<Symbol> row = new ArrayList<>();
+            List<Cell> row = new ArrayList<>();
             for (int j = 0; j < size; j++) {
-                row.add(null);
+                row.add(new Cell());
             }
             matrix.add(row);
         }
@@ -28,33 +31,35 @@ public class Board {
         this.size = size;
     }
 
-    public List<List<Symbol>> getMatrix() {
+    public List<List<Cell>> getMatrix() {
         return matrix;
     }
 
-    public void setMatrix(List<List<Symbol>> matrix) {
+    public void setMatrix(List<List<Cell>> matrix) {
         this.matrix = matrix;
     }
 
-    public void makeMove(Cell cell, Symbol symbol) {
-        this.matrix.get(cell.getRow())
-                .set(cell.getColumn(), symbol);
+    public void makeMove(Move move) throws MoveNotAllowedException {
+        this.matrix.get(move.getRow())
+                .get(move.getColumn()).setPlayer(move.getPlayer());
     }
 
-    public void undoMove(Cell cell) {
-        this.matrix.get(cell.getRow())
-                .set(cell.getColumn(), null);
+    public void undoMove(Move move) throws MoveNotAllowedException {
+        this.matrix.get(move.getRow())
+                .get(move.getColumn()).clear();
     }
 
     public void print() {
         System.out.println("______________");
-        for (List<Symbol> row : matrix) {
+        for (List<Cell> row : matrix) {
             System.out.print("|");
-            for (Symbol symbol : row) {
-                if (symbol == null) {
+            for (Cell cell : row) {
+                if (cell.getStatus() == CellStatus.EMPTY) {
                     System.out.print(" - |");
+                } else if (cell.getStatus() == CellStatus.BLOCKED) {
+                    System.out.print(" . |");
                 } else {
-                    System.out.print(" " + symbol.getCharacter() + " |");
+                    System.out.print(" " + cell.getSymbol() + " |");
                 }
             }
             System.out.println();

@@ -1,4 +1,7 @@
-package models;
+package enums;
+
+import models.Player;
+import models.Symbol;
 
 public class BotPlayer extends Player {
     private BotDifficultyLevel difficultyLevel;

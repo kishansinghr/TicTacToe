@@ -1,6 +1,6 @@
 package models;
 
-public enum Status {
+public enum GameStatus {
     IN_PROGRESS,
     WON,
     DRAW

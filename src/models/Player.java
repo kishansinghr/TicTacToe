@@ -1,5 +1,7 @@
 package models;
 
+import enums.PlayerType;
+
 import java.util.Scanner;
 
 public class Player {
@@ -37,12 +39,12 @@ public class Player {
         this.playerType = playerType;
     }
 
-    public Cell makeMove() {
+    public Move makeMove() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter row number: ");
         int row = scanner.nextInt();
         System.out.println("Enter column number: ");
         int col = scanner.nextInt();
-        return new Cell(row, col);
+        return new Move(row, col, this);
     }
 }

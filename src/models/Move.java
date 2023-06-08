@@ -1,20 +1,30 @@
 package models;
 
 public class Move {
-    private Cell cell;
+    private int row;
+    private int column;
     private Player player;
 
-    public Move(Cell cell, Player player) {
-        this.cell = cell;
+    public Move(int row, int column, Player player) {
+        this.row = row;
+        this.column = column;
         this.player = player;
     }
 
-    public Cell getCell() {
-        return cell;
+    public int getRow() {
+        return row;
     }
 
-    public void setCell(Cell cell) {
-        this.cell = cell;
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
     }
 
     public Player getPlayer() {
