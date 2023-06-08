@@ -165,7 +165,7 @@ public class Game {
                 throw new InvalidInputException("More than one bots not allowed."); //more than one bot
             }
 
-            int uniqueSymbolCount = playerList.stream().map(p -> p.getSymbol().getCharacter()).collect(Collectors.toSet()).size();
+            int uniqueSymbolCount = playerList.stream().map(p -> p.getSymbol().character()).collect(Collectors.toSet()).size();
             if (uniqueSymbolCount < size - 1) {
                 throw new InvalidInputException("Duplicate symbol not allowed"); // there are duplicate symbols
             }

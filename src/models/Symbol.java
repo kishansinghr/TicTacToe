@@ -2,16 +2,7 @@ package models;
 
 import java.util.Objects;
 
-public class Symbol {
-    private Character character;
-
-    public Symbol(Character character) {
-        this.character = character;
-    }
-
-    public Character getCharacter() {
-        return character;
-    }
+public record Symbol(Character character) {
 
     @Override
     public boolean equals(Object o) {
@@ -19,11 +10,6 @@ public class Symbol {
         if (o == null || getClass() != o.getClass()) return false;
         Symbol symbol = (Symbol) o;
         return Objects.equals(character, symbol.character);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(character);
     }
 
     @Override
