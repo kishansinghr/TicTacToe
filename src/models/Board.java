@@ -27,16 +27,8 @@ public class Board {
         return size;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     public List<List<Cell>> getMatrix() {
         return matrix;
-    }
-
-    public void setMatrix(List<List<Cell>> matrix) {
-        this.matrix = matrix;
     }
 
     public void makeMove(Move move) throws MoveNotAllowedException {

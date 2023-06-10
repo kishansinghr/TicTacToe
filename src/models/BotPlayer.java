@@ -3,14 +3,12 @@ package models;
 import enums.BotDifficultyLevel;
 import enums.PlayerType;
 import exceptions.MoveNotAllowedException;
-import models.Player;
-import models.Symbol;
 import strategies.BotPlayingStrategy;
 import strategies.BotPlayingStrategyFactory;
 
 public class BotPlayer extends Player {
-    private BotDifficultyLevel difficultyLevel;
-    private BotPlayingStrategy playingStrategy;
+    private final BotDifficultyLevel difficultyLevel;
+    private final BotPlayingStrategy playingStrategy;
 
     public BotPlayer(BotDifficultyLevel difficultyLevel) {
         super("Bot", new Symbol('B'), PlayerType.BOT);
@@ -20,10 +18,6 @@ public class BotPlayer extends Player {
 
     public BotDifficultyLevel getDifficultyLevel() {
         return difficultyLevel;
-    }
-
-    public void setDifficultyLevel(BotDifficultyLevel difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
     }
 
     @Override

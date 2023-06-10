@@ -4,7 +4,7 @@ import enums.CellStatus;
 import exceptions.MoveNotAllowedException;
 
 public class Cell {
-    private Position position;
+    private final Position position;
     private Player player;
     private CellStatus status;
 

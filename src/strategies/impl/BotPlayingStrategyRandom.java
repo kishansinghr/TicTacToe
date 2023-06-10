@@ -7,13 +7,12 @@ import models.Position;
 import strategies.BotPlayingStrategy;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BotPlayingStrategyRandom implements BotPlayingStrategy {
 
-    private Random random;
+    private final Random random;
 
     public BotPlayingStrategyRandom() {
         random = new Random();
@@ -24,7 +23,7 @@ public class BotPlayingStrategyRandom implements BotPlayingStrategy {
         List<Cell> emptyCells = board.getMatrix().stream()
                 .flatMap(List::stream)
                 .filter(cell -> cell.getStatus() == CellStatus.EMPTY)
-                .collect(Collectors.toList());
+                .toList();
 
         return emptyCells.get(random.nextInt(emptyCells.size())).getPosition();
     }

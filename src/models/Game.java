@@ -49,10 +49,6 @@ public class Game {
         return playerList;
     }
 
-    public void setPlayerList(List<Player> playerList) {
-        this.playerList = playerList;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -87,7 +83,7 @@ public class Game {
     public void makeMove() {
         Player currentPlayer = this.getPlayerList().get(this.playerIndex);
         System.out.println("Turn of Player "+currentPlayer.getName());
-        Move move = null;
+        Move move;
         try {
             move = currentPlayer.makeMove(this.board);
         } catch (MoveNotAllowedException e) {
@@ -107,9 +103,9 @@ public class Game {
 
         if (this.checkWinner(move)) {
             this.winner = currentPlayer;
-            this.gameStatus = GameStatus.WON;
+            this.setStatus(GameStatus.WON);
         } else if (this.moveList.size() == this.board.getSize() * this.board.getSize()) {
-            this.gameStatus = GameStatus.DRAW;
+            this.setStatus(GameStatus.DRAW);
         }
 
         this.playerIndex += 1;
@@ -162,21 +158,21 @@ public class Game {
         }
 
         public Game build() throws InvalidInputException {
-            if (size != this.playerList.size() + 1) {
+            if (size != this.getPlayerList().size() + 1) {
                 throw new InvalidInputException("Player count is not matching with board size."); // player count is not matching with board size
             }
 
-            long botCount = playerList.stream().filter(p -> p.getPlayerType() == PlayerType.BOT).count();
+            long botCount = getPlayerList().stream().filter(p -> p.getPlayerType() == PlayerType.BOT).count();
             if (botCount > 1) {
                 throw new InvalidInputException("More than one bots not allowed."); //more than one bot
             }
 
-            int uniqueSymbolCount = playerList.stream().map(p -> p.getSymbol().character()).collect(Collectors.toSet()).size();
+            int uniqueSymbolCount = getPlayerList().stream().map(p -> p.getSymbol().character()).collect(Collectors.toSet()).size();
             if (uniqueSymbolCount < size - 1) {
                 throw new InvalidInputException("Duplicate symbol not allowed"); // there are duplicate symbols
             }
 
-            return new Game(size, playerList);
+            return new Game(size, getPlayerList());
         }
     }
 }

@@ -17,6 +17,9 @@ public class BotPlayingStrategyEasy implements BotPlayingStrategy {
                 .filter(cell -> cell.getStatus() == CellStatus.EMPTY)
                 .findFirst();
 
-        return emptyCell.get().getPosition();
+        if (emptyCell.isPresent())
+            return emptyCell.get().getPosition();
+        else
+            return null;
     }
 }
