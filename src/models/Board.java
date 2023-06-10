@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Board {
 
-    private int size;
-    private List<List<Cell>> matrix;
+    private final int size;
+    private final List<List<Cell>> matrix;
 
     public Board(int size) {
         this.size = size;

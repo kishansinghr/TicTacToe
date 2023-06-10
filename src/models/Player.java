@@ -6,9 +6,9 @@ import exceptions.MoveNotAllowedException;
 import java.util.Scanner;
 
 public class Player {
-    private String name;
-    private Symbol symbol;
-    private PlayerType playerType;
+    private final String name;
+    private final Symbol symbol;
+    private final PlayerType playerType;
 
     public Player(String name, Symbol symbol, PlayerType playerType) {
         this.name = name;
@@ -20,24 +20,12 @@ public class Player {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Symbol getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(Symbol symbol) {
-        this.symbol = symbol;
-    }
-
     public PlayerType getPlayerType() {
         return playerType;
-    }
-
-    public void setPlayerType(PlayerType playerType) {
-        this.playerType = playerType;
     }
 
     public Move makeMove(Board board) throws MoveNotAllowedException {

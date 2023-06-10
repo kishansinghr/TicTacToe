@@ -8,7 +8,6 @@ import strategies.BotPlayingStrategy;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class BotPlayingStrategyRandom implements BotPlayingStrategy {
 

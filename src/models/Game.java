@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Game {
     private GameStatus gameStatus;
-    private List<Player> playerList;
+    private final List<Player> playerList;
     private Board board;
     private final Stack<Move> moveList;
     private int playerIndex;
@@ -55,14 +55,6 @@ public class Game {
 
     public void setBoard(Board board) {
         this.board = board;
-    }
-
-    public int getPlayerIndex() {
-        return playerIndex;
-    }
-
-    public void setPlayerIndex(int playerIndex) {
-        this.playerIndex = playerIndex;
     }
 
     public void printBoard() {
@@ -158,7 +150,7 @@ public class Game {
         }
 
         public Game build() throws InvalidInputException {
-            if (size != this.getPlayerList().size() + 1) {
+            if (getSize() != this.getPlayerList().size() + 1) {
                 throw new InvalidInputException("Player count is not matching with board size."); // player count is not matching with board size
             }
 
@@ -168,11 +160,11 @@ public class Game {
             }
 
             int uniqueSymbolCount = getPlayerList().stream().map(p -> p.getSymbol().character()).collect(Collectors.toSet()).size();
-            if (uniqueSymbolCount < size - 1) {
+            if (uniqueSymbolCount < getSize() - 1) {
                 throw new InvalidInputException("Duplicate symbol not allowed"); // there are duplicate symbols
             }
 
-            return new Game(size, getPlayerList());
+            return new Game(getSize(), getPlayerList());
         }
     }
 }
