@@ -3,9 +3,9 @@ package models;
 import enums.PlayerType;
 import exceptions.InvalidInputException;
 import exceptions.MoveNotAllowedException;
-import strategies.ColumnWinningStrategy;
-import strategies.DiagonalWinningStrategy;
-import strategies.RowWinningStrategy;
+import strategies.impl.ColumnWinningStrategy;
+import strategies.impl.DiagonalWinningStrategy;
+import strategies.impl.RowWinningStrategy;
 import strategies.WinningStrategy;
 import java.util.List;
 import java.util.Stack;
@@ -87,7 +87,13 @@ public class Game {
     public void makeMove() {
         Player currentPlayer = this.getPlayerList().get(this.playerIndex);
         System.out.println("Turn of Player "+currentPlayer.getName());
-        Move move = currentPlayer.makeMove();
+        Move move = null;
+        try {
+            move = currentPlayer.makeMove(this.board);
+        } catch (MoveNotAllowedException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         try {
             this.board.makeMove(move);

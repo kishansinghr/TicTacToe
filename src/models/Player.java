@@ -1,6 +1,7 @@
 package models;
 
 import enums.PlayerType;
+import exceptions.MoveNotAllowedException;
 
 import java.util.Scanner;
 
@@ -39,7 +40,7 @@ public class Player {
         this.playerType = playerType;
     }
 
-    public Move makeMove() {
+    public Move makeMove(Board board) throws MoveNotAllowedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter row number: ");
         int row = scanner.nextInt();

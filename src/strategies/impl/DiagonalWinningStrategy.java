@@ -1,8 +1,9 @@
-package strategies;
+package strategies.impl;
 
 import models.Board;
 import models.Move;
 import models.Symbol;
+import strategies.WinningStrategy;
 
 import java.util.Objects;
 

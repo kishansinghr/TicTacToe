@@ -4,12 +4,14 @@ import enums.CellStatus;
 import exceptions.MoveNotAllowedException;
 
 public class Cell {
+    private Position position;
     private Player player;
     private CellStatus status;
 
-    public Cell() {
+    public Cell(int row, int col) {
         this.player = null;
         this.status  = CellStatus.EMPTY;
+        this.position = new Position(row, col);
     }
 
     public Player getPlayer() {
@@ -54,5 +56,9 @@ public class Cell {
         } else {
             return this.getPlayer().getSymbol();
         }
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }
